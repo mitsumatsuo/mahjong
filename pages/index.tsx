@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 type User = {
@@ -9,19 +9,58 @@ type User = {
   checked: boolean;
 };
 
+type Match = {
+  id: number;
+  name: string;
+  users: string[];
+};
+
+const removeDup = (value: Match[]): Match[] => {
+  let ret: Match[] = [];
+
+  value.forEach((i) => {
+    let f = ret.find((r) => r.id === i.id);
+    if (!f) {
+      ret.push(i);
+    }
+  });
+
+  ret.sort((a, b) => (a.id < b.id ? -1 : 1));
+
+  return ret;
+};
+
 const defaultUsers: User[] = [
-  { id: 0, name: "山田", checked: false },
-  { id: 1, name: "前田", checked: false },
-  { id: 2, name: "吉田", checked: false },
-  { id: 3, name: "高田", checked: false },
-  { id: 4, name: "藤田", checked: false },
-  { id: 5, name: "中田", checked: false },
+  { id: 0, name: "橋本", checked: false },
+  { id: 1, name: "藤田", checked: false },
+  { id: 2, name: "渡辺", checked: false },
+  { id: 3, name: "松尾", checked: false },
+  { id: 4, name: "中川", checked: false },
+  { id: 5, name: "小林", checked: false },
+  { id: 6, name: "林", checked: false },
+  { id: 7, name: "中山", checked: false },
+  { id: 8, name: "高須賀", checked: false },
+  { id: 9, name: "宮地", checked: false },
+];
+
+const matches = [
+  { id: 0, name: "1回戦", users: ["橋本", "藤田", "松尾", "林"] },
+  { id: 1, name: "2回戦", users: ["藤田", "渡辺", "中川", "中山"] },
+  { id: 2, name: "3回戦", users: ["渡辺", "松尾", "小林", "高須賀"] },
+  { id: 3, name: "4回戦", users: ["松尾", "中川", "林", "宮地"] },
+  { id: 4, name: "5回戦", users: ["中川", "小林", "中山", "橋本"] },
+  { id: 5, name: "6回戦", users: ["小林", "林", "高須賀", "藤田"] },
+  { id: 6, name: "7回戦", users: ["林", "中山", "宮地", "渡辺"] },
+  { id: 7, name: "8回戦", users: ["中山", "高須賀", "橋本", "松尾"] },
+  { id: 8, name: "9回戦", users: ["高須賀", "宮地", "藤田", "中川"] },
+  { id: 9, name: "最終戦", users: ["宮地", "橋本", "渡辺", "小林"] },
 ];
 
 const title = "競技まぁじゃん部";
 
 const Home: NextPage = () => {
   const [users, setUsers] = useState(defaultUsers);
+  const [filteredMatches, setFilteredMatches] = useState(matches);
   const clickEventHandler = (e: User) => {
     e.checked = !e.checked;
     setUsers((old) => [
@@ -30,6 +69,17 @@ const Home: NextPage = () => {
       ...old.filter((user) => user.id > e.id),
     ]);
   };
+
+  useEffect(() => {
+    let availableMatches: Match[] = [];
+    users.forEach((user) => {
+      if (user.checked) {
+        const newValue = matches.filter((m) => m.users.includes(user.name));
+        availableMatches.push(...newValue);
+      }
+    });
+    setFilteredMatches(removeDup(availableMatches));
+  }, [users, setFilteredMatches]);
 
   return (
     <div className={styles.container}>
@@ -41,13 +91,13 @@ const Home: NextPage = () => {
 
       <main>
         <h1 className="text-3xl bg-red-500 text-white">{title}</h1>
-        <div className="font-bold text-orange-500 text-xl">メンバー一覧</div>
+        <div className="font-bold text-orange-500 text-xl">メンバー一覧　(参加できる人は名前をクリック)</div>
         <div className="flex space-x-4">
           {users.map((user) => {
             return user.checked ? (
               <div
                 key={user.id}
-                className="bg-green-500 text-center whitespace-nowrap px-4 my-2 rounded-full border border-green-500 select-none cursor-pointer shadow shadow-green-500 "
+                className="bg-blue-500 text-blue-50 text-center whitespace-nowrap px-4 my-2 rounded-full border border-blue-500 select-none cursor-pointer shadow shadow-blue-500"
                 onClick={() => clickEventHandler(user)}
               >
                 {user.name}
@@ -55,7 +105,7 @@ const Home: NextPage = () => {
             ) : (
               <div
                 key={user.id}
-                className="text-center whitespace-nowrap px-4 my-2 rounded-full border border-slate-500 select-none cursor-pointer"
+                className="bg-slate-500 text-slate-50 text-center whitespace-nowrap px-4 my-2 rounded-full border border-slate-500 select-none cursor-pointer shadow shadow-slate-500"
                 onClick={() => clickEventHandler(user)}
               >
                 {user.name}
@@ -63,6 +113,22 @@ const Home: NextPage = () => {
             );
           })}
         </div>
+        <div className="font-bold text-orange-500 text-xl">開催可能な対局</div>
+        {filteredMatches.map((match) => {
+          return (
+            <div key={match.id} className="">
+              <span>{match.name}:</span>
+              <div className="flex space-x-3">
+                {match.users.map((un) => {
+                  let y = users.filter(
+                    (user) => user.checked && user.name === un
+                  );
+                  return y && y.length > 0 ? <div className="font-bold text-red-500 text-xl">{un}</div> : <div className="font-thin text-slate-500 text-xl">{un}</div>;
+                })}
+              </div>
+            </div>
+          );
+        })}
       </main>
     </div>
   );
