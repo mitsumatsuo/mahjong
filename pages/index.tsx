@@ -144,12 +144,16 @@ const Home: NextPage = () => {
                 </div>
               );
             })}
-            <div
-              className="bg-slate-500 text-slate-50 text-center whitespace-nowrap px-4 py-1  rounded border border-slate-500 select-none cursor-pointer shadow shadow-slate-500 uppercase"
-              onClick={() => clickClearEventHandler()}
-            >
-              チェック解除
-            </div>
+            {users.every((user) => !user.checked) ? (
+              <></>
+            ) : (
+              <div
+                className="bg-slate-500 text-slate-50 text-center whitespace-nowrap px-4 py-1  rounded border border-slate-500 select-none cursor-pointer shadow shadow-slate-500 uppercase"
+                onClick={() => clickClearEventHandler()}
+              >
+                チェック解除
+              </div>
+            )}
           </div>
           <hr className="my-3" />
           <div className="font-bold text-black text-base">開催可能な対局</div>
