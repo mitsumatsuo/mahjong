@@ -1,10 +1,6 @@
 import { Client } from "@notionhq/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  convertResponseToPlayers,
-  defaultPlayer,
-  Player,
-} from "../../../lib/mahjong";
+import { convertResponseToPlayers, defaultPlayer } from "../../../lib/mahjong";
 import { handleError } from "../../../lib/notion";
 
 const notion = new Client({
@@ -16,8 +12,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { page, canPlay } = req.query;
+    const { page, canPlay, date } = req.query;
     const pageId = Array.isArray(page) ? "" : page;
+    const start = Array.isArray(date) ? "" : date;
     const databaseId = process.env.NOTION_DATABASE_ID ?? "";
     const response = await notion.databases.query({
       database_id: databaseId,
@@ -25,7 +22,6 @@ export default async function handler(
     const players = convertResponseToPlayers(response);
     const target =
       players.find((player) => player.page.id === pageId) ?? defaultPlayer;
-
     const rr = await notion.pages.update({
       page_id: pageId,
       properties: {
@@ -35,6 +31,11 @@ export default async function handler(
               ? true
               : false
             : !target.canPlay,
+        },
+        PlayableDate: {
+          date: {
+            start: start,
+          },
         },
       },
     });
