@@ -1,10 +1,15 @@
+import { Client } from "@notionhq/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   convertResponseToPlayers,
   defaultPlayer,
   Player,
 } from "../../../lib/mahjong";
-import { handleError, notion } from "../../../lib/notion";
+import { handleError } from "../../../lib/notion";
+
+export const notion = new Client({
+  auth: process.env.NOTION_ACCESS_TOKEN,
+});
 
 export default async function handler(
   req: NextApiRequest,

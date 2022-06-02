@@ -1,14 +1,9 @@
 import {
-  Client,
   ClientErrorCode,
   APIErrorCode,
   isNotionClientError,
 } from "@notionhq/client";
 import { NextApiResponse } from "next";
-
-export const notion = new Client({
-  auth: process.env.NOTION_ACCESS_TOKEN,
-});
 
 export const handleError = (error: unknown, res: NextApiResponse) => {
   if (isNotionClientError(error)) {
@@ -45,7 +40,7 @@ export const handleError = (error: unknown, res: NextApiResponse) => {
         break;
     }
   }
-  res.status(500).json({message:"notion api is failed", error:error});
+  res.status(500).json({ message: "notion api is failed", error: error });
 };
 
 function assertNever(error: never) {
