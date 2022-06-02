@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .janpai {
+    -webkit-writing-mode: vertical-rl;
+    -ms-writing-mode: vertical-rl;
+    letter-spacing: 4px;
+  }
+}

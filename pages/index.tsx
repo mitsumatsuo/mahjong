@@ -11,6 +11,13 @@ import {
   User,
 } from "../lib/mahjong";
 
+const goals = [
+  "🀇🀇🀇🀈🀉🀊🀋🀋🀌🀍🀎🀏🀏🀏(九蓮宝燈)",
+  "🀇🀏🀙🀡🀐🀘🀀🀁🀂🀃🀆🀅🀄🀄(国士無双)",
+  "🀇🀈🀉🀀🀀🀆🀆🀆🀅🀅🀅🀄🀄🀄(大三元)",
+  "🀇🀈🀉🀊🀋🀌🀍🀎🀏🀙🀚🀛🀜🀝🀞🀟🀠🀡🀐🀑🀒🀓🀔🀕🀖🀗🀘🀀🀁🀂🀃🀆🀅🀄(麻雀牌全種類)",
+];
+
 const Home: NextPage = () => {
   const { data, isError, isLoading } = usePlayers();
   const [users, setUsers] = useState(defaultUsers);
@@ -81,7 +88,8 @@ const Home: NextPage = () => {
 
       <main className="">
         <h1 className="font-bold text-2xl bg-gradient-to-r from-rose-500 via-rose-400 to-rose-300 text-white p-1">
-          {title}🀇🀇🀇🀈🀉🀊🀋🀋🀌🀍🀎🀏🀏🀏
+          {title}
+          {goals[Math.floor(Math.random() * goals.length)]}
         </h1>
         <div className="p-2">
           <div className="">
@@ -89,7 +97,25 @@ const Home: NextPage = () => {
           </div>
           <div className="flex space-x-1 sm:space-x-2 md:space-x-3 2xl:space-x-4 items-center font-serif">
             {users.map((user) => {
-              return user.checked ? (
+              return user.name.length > 2 ? (
+                user.checked ? (
+                  <div
+                    key={user.id}
+                    className="bg-white font-bold text-[red] text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-sm 2xl:text-xl janpai"
+                    onClick={() => clickEventHandler(user)}
+                  >
+                    {user.name}
+                  </div>
+                ) : (
+                  <div
+                    key={user.id}
+                    className="bg-blue-500 text-blue-50 text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-sm 2xl:text-xl janpai"
+                    onClick={() => clickEventHandler(user)}
+                  >
+                    {user.name}
+                  </div>
+                )
+              ) : user.checked ? (
                 <div
                   key={user.id}
                   className="bg-white font-bold text-[red] text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-xl 2xl:text-2xl"
