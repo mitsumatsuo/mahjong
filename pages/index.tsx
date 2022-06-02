@@ -1,79 +1,36 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useCallback, useState } from "react";
-
-type User = {
-  id: number;
-  name: string;
-  checked: boolean;
-};
-
-type Match = {
-  id: number;
-  name: string;
-  users: string[];
-};
-
-const removeDup = (value: Match[]): Match[] => {
-  let ret: Match[] = [];
-
-  value.forEach((i) => {
-    let f = ret.find((r) => r.id === i.id);
-    if (!f) {
-      ret.push(i);
-    }
-  });
-
-  ret.sort((a, b) => (a.id < b.id ? -1 : 1));
-
-  return ret;
-};
-
-const countAvailableMemberCount = (
-  users: User[],
-  targetMembers: string[]
-): number => {
-  let n = 0;
-  targetMembers.forEach((mem) => {
-    const found = users.find((user) => user.name === mem);
-    if (found && found.checked) {
-      n++;
-    }
-  });
-  return n;
-};
-
-const defaultUsers: User[] = [
-  { id: 0, name: "橋本", checked: false },
-  { id: 1, name: "藤田", checked: false },
-  { id: 2, name: "渡辺", checked: false },
-  { id: 3, name: "松尾", checked: false },
-  { id: 4, name: "中川", checked: false },
-  { id: 5, name: "小林", checked: false },
-  { id: 6, name: "林", checked: false },
-  { id: 7, name: "中山", checked: false },
-  { id: 8, name: "高須賀", checked: false },
-  { id: 9, name: "宮地", checked: false },
-];
-
-const matches = [
-  { id: 0, name: "🀙", users: ["橋本", "藤田", "松尾", "林"] },
-  { id: 1, name: "🀚", users: ["藤田", "渡辺", "中川", "中山"] },
-  { id: 2, name: "🀛", users: ["渡辺", "松尾", "小林", "高須賀"] },
-  { id: 3, name: "🀜", users: ["松尾", "中川", "林", "宮地"] },
-  { id: 4, name: "🀝", users: ["中川", "小林", "中山", "橋本"] },
-  { id: 5, name: "🀞", users: ["小林", "林", "高須賀", "藤田"] },
-  { id: 6, name: "🀟", users: ["林", "中山", "宮地", "渡辺"] },
-  { id: 7, name: "🀠", users: ["中山", "高須賀", "橋本", "松尾"] },
-  { id: 8, name: "🀡", users: ["高須賀", "宮地", "藤田", "中川"] },
-  { id: 9, name: "🀃", users: ["宮地", "橋本", "渡辺", "小林"] },
-];
-
-const title = "競技まぁじゃん部";
+import { useCallback, useEffect, useState } from "react";
+import usePlayers from "../hooks/usePlayers";
+import {
+  countAvailableMemberCount,
+  defaultUsers,
+  matches,
+  Player,
+  title,
+  User,
+} from "../lib/mahjong";
 
 const Home: NextPage = () => {
+  const { data, isError, isLoading } = usePlayers();
   const [users, setUsers] = useState(defaultUsers);
   const [filteredMatches, setFilteredMatches] = useState(matches);
+
+  useEffect(() => {
+    if (!data) return;
+    let newValue: User[] = [];
+
+    defaultUsers.forEach((user) => {
+      let player = data.find((item : Player) => item.name === user.name);
+      if (player) {
+        user.checked = player.canPlay;
+        user.pageId = player.page.id;
+      }
+      newValue.push(user);
+    });
+
+    setUsers(newValue);
+  }, [data]);
 
   const clickClearEventHandler = useCallback(() => {
     setUsers((s) => {
@@ -84,28 +41,29 @@ const Home: NextPage = () => {
         };
       });
     });
+    try {
+      users.forEach(async (user) => {
+        const r = await fetch(`/api/${user.pageId}/clear`);
+        const d = await r.json();
+      });
+    } catch (error) {}
   }, []);
 
-  const clickEventHandler = useCallback((e: User) => {
+  const clickEventHandler = useCallback(async (e: User) => {
     e.checked = !e.checked;
     setUsers((old) => [
       ...old.filter((user) => user.id < e.id),
       e,
       ...old.filter((user) => user.id > e.id),
     ]);
+    try {
+      const r = await fetch(`/api/${e.pageId}/edit?canPlay=${e.checked ? "1" : "0"}`);
+      const d = await r.json();
+    } catch (error) {}
   }, []);
 
-  // useEffect(() => {
-  //   let availableMatches: Match[] = [];
-  //   users.forEach((user) => {
-  //     if (user.checked) {
-  //       const newValue = matches.filter((m) => m.users.includes(user.name));
-  //       availableMatches.push(...newValue);
-  //     }
-  //   });
-
-  //   setFilteredMatches(removeDup(availableMatches.length === 0 ? matches : availableMatches));
-  // }, [users, setFilteredMatches]);
+  if (isLoading) return null;
+  if (isError) return null;
 
   return (
     <div className="bg-gradient-to-br from-green-800/90 via-green-800/90 to-green-800/90 select-none min-h-screen">
@@ -192,16 +150,22 @@ const Home: NextPage = () => {
                     )}
                   </div>
                   <div className="mt-4 2xl:mt-10 flex justify-between text-center m-2 2xl:m-4 items-center font-serif 2xl:gap-4 tracking-wide">
-                    {match.users.map((un) => {
+                    {match.users.map((un, index) => {
                       let y = users.filter(
                         (user) => user.checked && user.name === un
                       );
                       return y && y.length > 0 ? (
-                        <div className="text-2xl 2xl:text-4xl w-16 h-20 text-[orange]">
+                        <div
+                          key={index}
+                          className="text-2xl 2xl:text-4xl w-16 h-20 text-[orange]"
+                        >
                           {un}
                         </div>
                       ) : (
-                        <div className="text-2xl 2xl:text-4xl w-16 h-20 text-slate-400">
+                        <div
+                          key={index}
+                          className="text-2xl 2xl:text-4xl w-16 h-20 text-slate-400"
+                        >
                           {un}
                         </div>
                       );
