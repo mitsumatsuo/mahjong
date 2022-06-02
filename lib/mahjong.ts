@@ -34,7 +34,7 @@ export const convertResponseToPlayers = (response: any): Player[] => {
     return {
       page: { id: r.id },
       canPlay: r.properties.CanPlay.checkbox,
-      player: r.properties.UserName.title[0].plain_text,
+      name: r.properties.UserName.title[0].plain_text,
       date: r.properties.PlayableDate.date?.start,
     };
   });

@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     let newValue: User[] = [];
 
     defaultUsers.forEach((user) => {
-      let player = data.find((item : Player) => item.name === user.name);
+      let player = data.find((item: Player) => item.name === user.name);
       if (player) {
         user.checked = player.canPlay;
         user.pageId = player.page.id;
@@ -46,7 +46,9 @@ const Home: NextPage = () => {
         const r = await fetch(`/api/${user.pageId}/clear`);
         const d = await r.json();
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }, [users]);
 
   const clickEventHandler = useCallback(async (e: User) => {
@@ -57,9 +59,13 @@ const Home: NextPage = () => {
       ...old.filter((user) => user.id > e.id),
     ]);
     try {
-      const r = await fetch(`/api/${e.pageId}/edit?canPlay=${e.checked ? "1" : "0"}`);
+      const r = await fetch(
+        `/api/${e.pageId}/edit?canPlay=${e.checked ? "1" : "0"}`
+      );
       const d = await r.json();
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   if (isLoading) return null;

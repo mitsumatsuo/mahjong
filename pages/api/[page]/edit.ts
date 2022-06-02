@@ -7,7 +7,7 @@ import {
 } from "../../../lib/mahjong";
 import { handleError } from "../../../lib/notion";
 
-export const notion = new Client({
+const notion = new Client({
   auth: process.env.NOTION_ACCESS_TOKEN,
 });
 

@@ -2,7 +2,7 @@ import { Client } from "@notionhq/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { handleError } from "../../../lib/notion";
 
-export const notion = new Client({
+const notion = new Client({
   auth: process.env.NOTION_ACCESS_TOKEN,
 });
 
