@@ -47,7 +47,7 @@ const Home: NextPage = () => {
         const d = await r.json();
       });
     } catch (error) {}
-  }, []);
+  }, [users]);
 
   const clickEventHandler = useCallback(async (e: User) => {
     e.checked = !e.checked;
