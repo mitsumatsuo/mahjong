@@ -113,7 +113,9 @@ const Home: NextPage = () => {
     ]);
     try {
       const r = await fetch(
-        `/api/${e.pageId}/edit?canPlay=${e.checked ? "1" : "0"}&date=${getToday()}`
+        `/api/${e.pageId}/edit?canPlay=${
+          e.checked ? "1" : "0"
+        }&date=${getToday()}`
       );
       const d = await r.json();
     } catch (error) {
@@ -134,13 +136,13 @@ const Home: NextPage = () => {
 
       <main className="">
         <div className="flex justify-between bg-gradient-to-r from-rose-500 via-rose-400 to-rose-300 text-white p-1">
-          <h1 className="font-bold text-2xl ">
-            {title}
-          </h1>
-          <p className="font-mono text-2xl">{goals[Math.floor(Math.random() * goals.length)]}</p>
+          <h1 className="font-bold text-2xl ">{title}</h1>
+          <p className="font-mono text-2xl">
+            {goals[Math.floor(Math.random() * goals.length)]}
+          </p>
         </div>
         <div className="p-2">
-          <div className="">
+          <div className="mb-4">
             <span className="font-bold text-white text-base">メンバー</span>
           </div>
           <div className="flex space-x-1 sm:space-x-2 md:space-x-3 2xl:space-x-4 items-center font-serif">
@@ -149,35 +151,39 @@ const Home: NextPage = () => {
                 user.checked ? (
                   <div
                     key={user.id}
-                    className="bg-white font-bold text-[red] text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-sm 2xl:text-xl janpai"
+                    className="bg-white font-bold text-[red] text-center px-2 2xl:px-4 rounded-md border border-black/60 cursor-pointer shadow shadow-black/60 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-sm 2xl:text-xl janpai drop-shadow-jp"
                     onClick={() => clickEventHandler(user)}
                   >
-                    {user.name}
+                    <div className="absolute inset-0 rounded-md bg-white"></div>
+                    <div className="z-10 drop-shadow-xl">{user.name}</div>
                   </div>
                 ) : (
                   <div
                     key={user.id}
-                    className="bg-blue-500 text-blue-50 text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-sm 2xl:text-xl janpai"
+                    className="bg-blue-500 text-blue-50 text-center px-2 2xl:px-4 rounded-md border border-blue-600 cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-sm 2xl:text-xl janpai drop-shadow-jp"
                     onClick={() => clickEventHandler(user)}
                   >
-                    {user.name}
+                    <div className="absolute inset-0 rounded-md bg-blue-500"></div>
+                    <div className="z-10 drop-shadow-xl">{user.name}</div>
                   </div>
                 )
               ) : user.checked ? (
                 <div
                   key={user.id}
-                  className="bg-white font-bold text-[red] text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-xl 2xl:text-2xl"
+                  className="bg-white font-bold text-[red] text-center px-2 2xl:px-4 rounded-md border border-black/60 cursor-pointer shadow shadow-black/60 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-xl 2xl:text-2xl drop-shadow-jp"
                   onClick={() => clickEventHandler(user)}
                 >
-                  {user.name}
+                  <div className="absolute inset-0 rounded-md bg-white"></div>
+                  <div className="z-10 drop-shadow-xl">{user.name}</div>
                 </div>
               ) : (
                 <div
                   key={user.id}
-                  className="bg-blue-500 text-blue-50 text-center px-2 2xl:px-4 rounded-md border-2 border-black cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-xl 2xl:text-2xl"
+                  className="relative bg-blue-500 text-blue-50 text-center px-2 2xl:px-4 rounded-md border border-blue-600 cursor-pointer shadow shadow-blue-500 w-10 h-16 2xl:w-16 2xl:h-20 flex justify-center items-center text-xl 2xl:text-2xl drop-shadow-jp"
                   onClick={() => clickEventHandler(user)}
                 >
-                  {user.name}
+                  <div className="absolute inset-0 rounded-md bg-blue-500"></div>
+                  <div className="z-10 drop-shadow-xl">{user.name}</div>
                 </div>
               );
             })}
