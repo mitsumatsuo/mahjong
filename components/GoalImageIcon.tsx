@@ -13,7 +13,7 @@ const GoalImageIcon = ({
   height,
 }: Goal) => {
   return (
-    <div className="hidden md:block absolute top-0 right-0 w-[350px] h-[30px] p-1">
+    <div className="hidden md:block absolute top-10 right-left w-[350px] h-[30px] p-1">
       <div className="relative w-full h-full">
         <div className="absolute shrink-0 w-full h-full group">
           <Image

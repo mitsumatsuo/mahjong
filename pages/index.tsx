@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import GoalImageIcon from "../components/GoalImageIcon";
 import { useCallback, useEffect, useState } from "react";
-import useGoals from "../hooks/useGoals";
 import usePlayers from "../hooks/usePlayers";
 import {
   countAvailableMemberCount,
@@ -15,7 +13,6 @@ import {
 import { getToday } from "../lib/util";
 
 const Home: NextPage = () => {
-  const { data: goals } = useGoals();
   const { data, isError, isLoading } = usePlayers();
   const [users, setUsers] = useState(defaultUsers);
   const [filteredMatches, setFilteredMatches] = useState(matches);
@@ -77,8 +74,6 @@ const Home: NextPage = () => {
   if (isLoading) return null;
   if (isError) return null;
 
-  const goal = goals[Math.floor(Math.random() * goals.length)];
-
   return (
     <div className="bg-gradient-to-br from-green-800/90 via-green-800/90 to-green-800/90 select-none min-h-screen">
       <Head>
@@ -91,7 +86,6 @@ const Home: NextPage = () => {
         <div className="flex justify-between bg-gradient-to-r from-rose-500 via-rose-400 to-rose-300 text-white p-1">
           <h1 className="font-bold text-2xl ">{title}</h1>
         </div>
-        <GoalImageIcon {...goal} />
 
         <div className="p-2">
           <div className="mb-4">
@@ -152,7 +146,7 @@ const Home: NextPage = () => {
           </div>
           <hr className="my-3" />
           <div className="font-bold text-white text-base">マッチング状況</div>
-          <div className="w-[800px] xl:w-[1280px] grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-flow-row-dense gap-1 md:gap-2 2xl:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 grid-flow-row gap-4">
             {filteredMatches.map(({ id, name, users: matchUsers, done }) => {
               const numOfAvailable = countAvailableMemberCount(
                 users,
@@ -161,39 +155,39 @@ const Home: NextPage = () => {
               return (
                 <div
                   key={id}
-                  className={`w-[180px] xl:w-[300px] h-[180px] xl:h-[300px] rounded-lg border-2 2xl:border-8 border-green-900 bg-[green] ${
+                  className={`w-[180px] h-[180px] rounded-lg border-2 border-green-900 bg-[green] ${
                     done ? "order-1" : ""
                   }`}
                 >
-                  <div className="flex justify-between items-center m-1 xl:m-4 font-serif">
-                    <span className="text-3xl xl:text-5xl">{name}</span>
+                  <div className="flex justify-between items-center m-1 font-serif">
+                    <span className="text-3xl">{name}</span>
                     {done === true ? (
-                      <span className="text-lg xl:text-2xl px-2 xl:px-4 py-px xl:py-1 rounded-md bg-rose-500 text-white xl:shadow-sm shadow-rose-500/80">
+                      <span className="text-lg px-2 py-px rounded-md bg-rose-500 text-white">
                         対局済
                       </span>
                     ) : numOfAvailable === 4 ? (
-                      <span className="text-lg xl:text-2xl px-2 xl:px-4 py-px xl:py-1 rounded-md bg-[blue] text-white xl:shadow-sm shadow-[blue]/80">
+                      <span className="text-lg px-2 py-px rounded-md bg-[blue] text-white">
                         聴牌
                       </span>
                     ) : numOfAvailable === 3 ? (
-                      <span className="text-lg xl:text-2xl px-2 xl:px-4 py-px xl:py-1 rounded-md bg-[orange] text-white xl:shadow-sm shadow-[orange]/80">
+                      <span className="text-lg px-2 py-px rounded-md bg-[orange] text-white">
                         一向聴
                       </span>
                     ) : numOfAvailable === 2 ? (
-                      <span className="text-lg xl:text-2xl px-2 xl:px-4 py-px xl:py-1 rounded-md bg-rose-500 text-white xl:shadow-sm shadow-rose-500/80">
+                      <span className="text-lg px-2 py-px rounded-md bg-rose-500 text-white">
                         二向聴
                       </span>
                     ) : numOfAvailable === 1 ? (
-                      <span className="text-lg xl:text-2xl px-2 xl:px-4 py-px xl:py-1 rounded-md bg-[brown] text-white xl:shadow-sm shadow-[brown]/80">
+                      <span className="text-lg px-2 py-px rounded-md bg-[brown] text-white">
                         三向聴
                       </span>
                     ) : (
-                      <span className="text-lg xl:text-2xl px-2 xl:px-4 py-px xl:py-1 rounded-md bg-[purple] text-white xl:shadow-sm shadow-[purple]/80">
+                      <span className="text-lg px-2 py-px rounded-md bg-[purple] text-white">
                         四向聴
                       </span>
                     )}
                   </div>
-                  <div className="mt-4 xl:mt-10 flex justify-between text-center m-2 xl:m-4 items-center font-serif xl:gap-4 tracking-wide">
+                  <div className="mt-4 flex justify-between text-center m-2 items-center font-serif tracking-wide">
                     {matchUsers.map(({ name, score }, index) => {
                       let y = users.filter(
                         (user) => user.checked && user.name === name
@@ -201,13 +195,13 @@ const Home: NextPage = () => {
                       return y && y.length > 0 && !done ? (
                         <div
                           key={index}
-                          className="text-2xl xl:text-4xl w-16 h-20 text-[orange]"
+                          className="text-2xl w-16 h-20 text-[orange]"
                         >
                           {name}
                           {done ? (
                             <>
                               <br />
-                              <span className={`font-mono font-bold text-xl ${score > 0 ? "text-[blue]" : "text-red-50"}`}>
+                              <span className={`font-mono font-bold text-lg ${score > 0 ? "text-[blue]" : "text-red-50"}`}>
                                 {score > 0 ? "+" : ""}
                                 {score}
                               </span>
@@ -217,13 +211,13 @@ const Home: NextPage = () => {
                       ) : (
                         <div
                           key={index}
-                          className="text-2xl xl:text-4xl w-16 h-20 text-slate-400"
+                          className="text-2xl w-16 h-20 text-slate-400"
                         >
                           {name}
                           {done ? (
                             <>
                               <br />
-                              <span className={`font-mono font-bold text-xl ${score > 0 ? "text-[blue]" : "text-red-50"}`}>
+                              <span className={`font-mono font-bold text-lg ${score > 0 ? "text-[blue]" : "text-red-50"}`}>
                                 {score > 0 ? "+" : ""}
                                 {score}
                               </span>
