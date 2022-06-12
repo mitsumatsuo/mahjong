@@ -3,6 +3,8 @@ import { Goal } from "../lib/mahjong";
 
 type Result = {
   data: Goal[];
+  isLoading: boolean;
+  isError: boolean;
 };
 
 const useGoals = (): Result => {
@@ -14,6 +16,8 @@ const useGoals = (): Result => {
 
   return {
     data: data,
+    isLoading: !error && !data,
+    isError: error,
   };
 };
 

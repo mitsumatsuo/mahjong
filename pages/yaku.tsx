@@ -2,10 +2,12 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import GoalImageIcon from "../components/GoalImageIcon";
 import useGoals from "../hooks/useGoals";
-import { title } from "../lib/mahjong";
 
 const Home: NextPage = () => {
-  const { data: goals } = useGoals();
+  const { data: goals, isLoading, isError } = useGoals();
+
+  if (isLoading) return null;
+  if (isError) return null;
 
   const goal = goals[Math.floor(Math.random() * goals.length)];
 
