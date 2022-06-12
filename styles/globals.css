@@ -9,3 +9,19 @@
     letter-spacing: 4px;
   }
 }
+
+.size-one {
+  @apply text-sm 2xl:text-xl;
+}
+.size-two {
+  @apply text-xl 2xl:text-2xl
+}
+.color-one {
+  @apply bg-white font-bold text-[red] border-black/60 shadow-black/60;
+}
+.color-two {
+  @apply bg-blue-500 text-blue-50 border-blue-600 shadow-blue-500 ;
+}
+.common {
+  @apply relative text-center px-2 2xl:px-4 rounded-md border cursor-pointer shadow w-[3rem] h-16 2xl:w-[3.75rem] 2xl:h-20 flex justify-center items-center drop-shadow-jp;
+}
