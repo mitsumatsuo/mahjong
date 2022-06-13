@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="relative">
+      <main className="flex flex-col relative items-center">
         <div className="pt-10 flex space-x-3 pl-3 pb-3 justify-center w-[350px]">
           <button
             onClick={() =>
