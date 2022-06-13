@@ -13,7 +13,7 @@ const GoalImageIcon = ({
   height,
 }: Goal) => {
   return (
-    <div className="hidden md:block absolute top-10 right-left w-[350px] h-[30px] p-1">
+    <div className="w-[350px] h-[30px] p-1">
       <div className="relative w-full h-full">
         <div className="absolute shrink-0 w-full h-full group">
           <Image
@@ -24,7 +24,7 @@ const GoalImageIcon = ({
             className=""
             alt={kana}
           />
-          <div className="hidden group-hover:block relative">
+          <div className="group-hover:block relative">
             <div className="mx-auto w-0 h-0 border-b-blue-500 border-8 border-transparent"></div>
             <div className="rounded-lg bg-gradient-to-r from-green-400/80 to-blue-500/80 p-2 px-8">
               <div className="font-serif">
