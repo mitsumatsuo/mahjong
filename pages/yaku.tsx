@@ -6,7 +6,7 @@ import useGoals from "../hooks/useGoals";
 
 const Home: NextPage = () => {
   const { data: goals, isLoading, isError } = useGoals();
-  const [index, setIndex] = useState(Math.floor(Math.random() * goals.length));
+  const [index, setIndex] = useState(() => goals ? Math.floor(Math.random() * goals.length) : 0);
 
   if (isLoading) return null;
   if (isError) return null;
