@@ -132,14 +132,14 @@ let variants: Variants = {
   enter: ({ direction, width }: { direction: number; width: number }) => {
     return {
       x: direction * width,
-      opacity: 0,
+      opacity: 1,
     };
   },
   center: { x: 0, opacity: 1 },
   exit: ({ direction, width }: { direction: number; width: number }) => {
     return {
       x: direction * -width,
-      opacity: 0,
+      opacity: 1,
     };
   },
 };
