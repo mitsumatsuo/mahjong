@@ -15,7 +15,7 @@ import useMeasure from "react-use-measure";
 import { Dispatch } from "react";
 
 const duration = 0.5;
-const Home: NextPage = () => {
+const Yaku: NextPage = () => {
   const { data: goals, isLoading, isError } = useGoals();
   const [index, setIndex] = useState(0);
   const [ref, { width }] = useMeasure();
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
 
   return (
     <MotionConfig transition={{ duration }}>
-      <div className="bg-gradient-to-br from-green-800/90 via-green-800/90 to-green-800/90 select-none min-h-screen pb-10 overflow-hidden">
+      <div className="">
         <main className="flex flex-col relative items-center">
           <div className="flex space-x-3 justify-center py-10">
             <button
@@ -196,7 +196,7 @@ const DescriptionItem = ({
   );
 };
 
-export default Home;
+export default Yaku;
 
 /*
   Replacer function to JSON.stringify that ignores
