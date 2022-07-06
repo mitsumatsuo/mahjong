@@ -89,7 +89,7 @@ const Yaku: NextPage = () => {
               </motion.div>
             </AnimatePresence>
           </div>
-          <div className="border border-green-900 w-[400px]">
+          <div className="border border-white w-[400px] text-white">
             <ResizablePanel>
               <DescriptionItem value={`${kana}(${kanji})`}>
                 役名
