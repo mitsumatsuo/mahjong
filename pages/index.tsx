@@ -94,7 +94,7 @@ const Home: NextPage = () => {
               <span className="font-bold text-white text-base">メンバー</span>
             </div>
             <div className="flex flex-col space-y-4 xl:space-y-0 xl:flex-row">
-              <div className="flex space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 items-center font-serif">
+              <div className="flex space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 items-center font-serif font-bold">
                 {users.map((user) => {
                   return user.name.length > 2 ? (
                     user.checked ? (
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
                       className="common color-two size-two"
                       onClick={() => clickEventHandler(user)}
                     >
-                      <div className="absolute inset-0 rounded-md bg-blue-500"></div>
+                      <div className="absolute inset-0 rounded-md bg-white"></div>
                       <div className="z-10 drop-shadow-xl">{user.name}</div>
                     </div>
                   );
@@ -254,9 +254,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className="hidden md:block p-2">
-              <div className="font-bold text-white text-base">
-                役
-              </div>
+              <div className="font-bold text-white text-base">役</div>
               <Yaku />
             </div>
           </div>

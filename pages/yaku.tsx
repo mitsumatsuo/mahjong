@@ -51,18 +51,21 @@ const Yaku: NextPage = () => {
             <button
               onClick={() => setIndex((s) => s - 1)}
               className="bg-white rounded px-1 shadow-sm shadow-black text-[purple] font-serif"
+              aria-label="previous"
             >
               <ChevronLeftIcon className="w-6" />
             </button>
             <button
               onClick={() => setIndex(Math.floor(Math.random() * goals.length))}
               className="bg-white rounded px-1 shadow-sm shadow-black text-[purple] font-serif"
+              aria-label="random"
             >
               <QuestionMarkCircleIcon className="w-6" />
             </button>
             <button
               onClick={() => setIndex((s) => s + 1)}
               className="bg-white rounded px-1 shadow-sm shadow-black text-[purple] font-serif"
+              aria-label="next"
             >
               <ChevronRightIcon className="w-6" />
             </button>
