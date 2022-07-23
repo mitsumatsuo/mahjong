@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useState } from "react";
 import useGoals from "../hooks/useGoals";
 import {
@@ -40,6 +39,7 @@ const Yaku: NextPage = () => {
     han,
     condition,
     description,
+    descriptionUrl,
     probability,
   }: Goal = goals[idx];
 
@@ -111,6 +111,7 @@ const Yaku: NextPage = () => {
                 出現率
               </DescriptionItem>
               <DescriptionItem>{description}</DescriptionItem>
+              {descriptionUrl && <DescriptionLinkItem value={descriptionUrl}>詳しい解説</DescriptionLinkItem>}
             </ResizablePanel>
           </div>
         </main>
@@ -195,6 +196,21 @@ const DescriptionItem = ({
     <div className="flex justify-between items-center">
       <span>{children}</span>
       {value && <span>{value}</span>}
+    </div>
+  );
+};
+
+const DescriptionLinkItem = ({
+  value,
+  children,
+}: {
+  value?: string | number | undefined;
+  children: ReactNode | string;
+}) => {
+  return (
+    <div className="flex justify-between items-center">
+      <span>{children}</span>
+      {value && <a href={String(value) ?? "/"} target="_blank" rel="noopener noreferrer">開く</a>}
     </div>
   );
 };

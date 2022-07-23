@@ -96,6 +96,26 @@ const Home: NextPage = () => {
             <div className="flex flex-col space-y-4 xl:space-y-0 xl:flex-row">
               <div className="flex space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 items-center font-serif font-bold">
                 {users.map((user) => {
+                  if (!user.member) {
+                    return user.checked ?  (
+                      <div
+                        key={user.id}
+                        className="common color-one size-two janpai"
+                        onClick={() => clickEventHandler(user)}
+                      >
+                        {user.name}
+                      </div>
+                    ) : (
+                      <div
+                        key={user.id}
+                        className="common color-two size-two janpai"
+                        onClick={() => clickEventHandler(user)}
+                      >
+                        {user.name}
+                      </div>
+                    );
+                  }
+
                   return user.name.length > 2 ? (
                     user.checked ? (
                       <div
@@ -170,7 +190,7 @@ const Home: NextPage = () => {
                         <div className="flex justify-between items-center m-1 font-serif">
                           <span className="text-3xl">{name}</span>
                           {done === true ? (
-                            <span className="text-lg px-2 py-px rounded-md bg-rose-500 text-white">
+                            <span className="text-lg px-2 py-px rounded-md bg-rose-600 text-white">
                               対局済
                             </span>
                           ) : numOfAvailable === 4 ? (
@@ -212,7 +232,7 @@ const Home: NextPage = () => {
                                     <span
                                       className={`font-mono font-bold text-lg ${
                                         score > 0
-                                          ? "text-[blue]"
+                                          ? "text-[#166365e6]"
                                           : "text-red-50"
                                       }`}
                                     >

@@ -14,6 +14,7 @@ export type User = {
   name: string;
   checked: boolean;
   pageId: string;
+  member: boolean;
 };
 
 export type MatchUser = {
@@ -35,6 +36,7 @@ export type Goal = {
   condition: string | undefined;
   image: string | undefined;
   description: string | undefined;
+  descriptionUrl: string | undefined;
   probability: number | undefined;
   width: number | undefined;
   height: number | undefined;
@@ -59,16 +61,19 @@ export const convertResponseToPlayers = (response: any): Player[] => {
 };
 
 export const defaultUsers: User[] = [
-  { id: 0, name: "橋本", checked: false, pageId: "" },
-  { id: 1, name: "藤田", checked: false, pageId: "" },
-  { id: 2, name: "渡辺", checked: false, pageId: "" },
-  { id: 3, name: "松尾", checked: false, pageId: "" },
-  { id: 4, name: "中川", checked: false, pageId: "" },
-  { id: 5, name: "小林", checked: false, pageId: "" },
-  { id: 6, name: "林", checked: false, pageId: "" },
-  { id: 7, name: "中山", checked: false, pageId: "" },
-  { id: 8, name: "高須賀", checked: false, pageId: "" },
-  { id: 9, name: "宮地", checked: false, pageId: "" },
+  { id: 0, name: "橋本", checked: false, pageId: "", member:true },
+  { id: 1, name: "藤田", checked: false, pageId: "", member:true },
+  { id: 2, name: "渡辺", checked: false, pageId: "", member:true },
+  { id: 3, name: "松尾", checked: false, pageId: "", member:true },
+  { id: 4, name: "中川", checked: false, pageId: "", member:true },
+  { id: 5, name: "小林", checked: false, pageId: "", member:true },
+  { id: 6, name: "林", checked: false, pageId: "", member:true },
+  { id: 7, name: "中山", checked: false, pageId: "", member:true },
+  { id: 8, name: "高須賀", checked: false, pageId: "", member:true },
+  { id: 9, name: "宮地", checked: false, pageId: "", member:true },
+  { id: 10, name: "土屋", checked: false, pageId: "", member:false },
+  { id: 11, name: "川本", checked: false, pageId: "", member:false },
+  { id: 12, name: "山田", checked: false, pageId: "", member:false },
 ];
 
 export const matches: Match[] = [
