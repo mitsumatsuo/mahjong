@@ -111,7 +111,12 @@ const Yaku: NextPage = () => {
                 出現率
               </DescriptionItem>
               <DescriptionItem>{description}</DescriptionItem>
-              {descriptionUrl && <DescriptionLinkItem value={descriptionUrl}>詳しい解説</DescriptionLinkItem>}
+              {descriptionUrl && (
+                <DescriptionLinkItem
+                  value={descriptionUrl}
+                  label="詳しい解説"
+                ></DescriptionLinkItem>
+              )}
             </ResizablePanel>
           </div>
         </main>
@@ -202,15 +207,26 @@ const DescriptionItem = ({
 
 const DescriptionLinkItem = ({
   value,
+  label,
   children,
 }: {
   value?: string | number | undefined;
-  children: ReactNode | string;
+  label?: string | undefined;
+  children?: ReactNode | string;
 }) => {
   return (
     <div className="flex justify-between items-center">
       <span>{children}</span>
-      {value && <a href={String(value) ?? "/"} target="_blank" rel="noopener noreferrer">開く</a>}
+      {value && (
+        <a
+          href={String(value) ?? "/"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 text-[yellow] hover:text-yellow-300"
+        >
+          {label ?? "開く"}
+        </a>
+      )}
     </div>
   );
 };
