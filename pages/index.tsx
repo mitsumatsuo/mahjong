@@ -31,12 +31,14 @@ const Page: NextPage = () => {
   }, [data, setUsers, defaultUsers]);
 
   const clearEventHandler = useCallback(() => {
-    setUsers((user) => {
-      return {
-        ...user,
-        league: false,
-        practice: false,
-      };
+    setUsers((s) => {
+      return s.map((ss) => {
+        return {
+          ...ss,
+          league: false,
+          practice: false,
+        };
+      });
     });
     try {
       users.forEach(async (user) => {
