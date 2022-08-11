@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useState } from "react";
 import useGoals from "../hooks/useGoals";
 import {
@@ -40,6 +39,7 @@ const Yaku: NextPage = () => {
     han,
     condition,
     description,
+    descriptionUrl,
     probability,
   }: Goal = goals[idx];
 
@@ -51,18 +51,21 @@ const Yaku: NextPage = () => {
             <button
               onClick={() => setIndex((s) => s - 1)}
               className="bg-white rounded px-1 shadow-sm shadow-black text-[purple] font-serif"
+              aria-label="previous"
             >
               <ChevronLeftIcon className="w-6" />
             </button>
             <button
               onClick={() => setIndex(Math.floor(Math.random() * goals.length))}
               className="bg-white rounded px-1 shadow-sm shadow-black text-[purple] font-serif"
+              aria-label="random"
             >
               <QuestionMarkCircleIcon className="w-6" />
             </button>
             <button
               onClick={() => setIndex((s) => s + 1)}
               className="bg-white rounded px-1 shadow-sm shadow-black text-[purple] font-serif"
+              aria-label="next"
             >
               <ChevronRightIcon className="w-6" />
             </button>
@@ -108,6 +111,12 @@ const Yaku: NextPage = () => {
                 出現率
               </DescriptionItem>
               <DescriptionItem>{description}</DescriptionItem>
+              {descriptionUrl && (
+                <DescriptionLinkItem
+                  value={descriptionUrl}
+                  label="詳しい解説"
+                ></DescriptionLinkItem>
+              )}
             </ResizablePanel>
           </div>
         </main>
@@ -192,6 +201,32 @@ const DescriptionItem = ({
     <div className="flex justify-between items-center">
       <span>{children}</span>
       {value && <span>{value}</span>}
+    </div>
+  );
+};
+
+const DescriptionLinkItem = ({
+  value,
+  label,
+  children,
+}: {
+  value?: string | number | undefined;
+  label?: string | undefined;
+  children?: ReactNode | string;
+}) => {
+  return (
+    <div className="flex justify-between items-center">
+      <span>{children}</span>
+      {value && (
+        <a
+          href={String(value) ?? "/"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 text-[yellow] hover:text-yellow-300"
+        >
+          {label ?? "開く"}
+        </a>
+      )}
     </div>
   );
 };

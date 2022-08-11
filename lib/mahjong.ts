@@ -4,7 +4,8 @@ type NotionPage = {
 
 export type Player = {
   page: NotionPage;
-  canPlay: boolean;
+  league: boolean;
+  practice: boolean;
   name: string;
   date: string;
 };
@@ -12,8 +13,10 @@ export type Player = {
 export type User = {
   id: number;
   name: string;
-  checked: boolean;
+  league: boolean;
+  practice: boolean;
   pageId: string;
+  member: boolean;
 };
 
 export type MatchUser = {
@@ -35,6 +38,7 @@ export type Goal = {
   condition: string | undefined;
   image: string | undefined;
   description: string | undefined;
+  descriptionUrl: string | undefined;
   probability: number | undefined;
   width: number | undefined;
   height: number | undefined;
@@ -42,7 +46,8 @@ export type Goal = {
 
 export const defaultPlayer: Player = {
   page: { id: "" },
-  canPlay: false,
+  league: false,
+  practice: false,
   name: "noname",
   date: "2022-04-01",
 };
@@ -51,7 +56,8 @@ export const convertResponseToPlayers = (response: any): Player[] => {
   return response.results.map((r: any) => {
     return {
       page: { id: r.id },
-      canPlay: r.properties.CanPlay.checkbox,
+      league: r.properties.League.checkbox,
+      practice: r.properties.Practice.checkbox,
       name: r.properties.UserName.title[0].plain_text,
       date: r.properties.PlayableDate.date?.start,
     };
@@ -59,128 +65,109 @@ export const convertResponseToPlayers = (response: any): Player[] => {
 };
 
 export const defaultUsers: User[] = [
-  { id: 0, name: "橋本", checked: false, pageId: "" },
-  { id: 1, name: "藤田", checked: false, pageId: "" },
-  { id: 2, name: "渡辺", checked: false, pageId: "" },
-  { id: 3, name: "松尾", checked: false, pageId: "" },
-  { id: 4, name: "中川", checked: false, pageId: "" },
-  { id: 5, name: "小林", checked: false, pageId: "" },
-  { id: 6, name: "林", checked: false, pageId: "" },
-  { id: 7, name: "中山", checked: false, pageId: "" },
-  { id: 8, name: "高須賀", checked: false, pageId: "" },
-  { id: 9, name: "宮地", checked: false, pageId: "" },
-];
-
-export const matches: Match[] = [
   {
     id: 0,
-    name: "🀙",
-    users: [
-      { name: "渡辺", score: 4 },
-      { name: "藤田", score: 52 },
-      { name: "松尾", score: -23 },
-      { name: "中川", score: -33 },
-    ],
-    done: true,
+    name: "橋本",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 1,
-    name: "🀚",
-    users: [
-      { name: "藤田", score: 0 },
-      { name: "橋本", score: 0 },
-      { name: "林", score: 0 },
-      { name: "中山", score: 0 },
-    ],
-    done: false,
+    name: "藤田",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 2,
-    name: "🀛",
-    users: [
-      { name: "橋本", score: 0 },
-      { name: "松尾", score: 0 },
-      { name: "小林", score: 0 },
-      { name: "高須賀", score: 0 },
-    ],
-    done: false,
+    name: "渡辺",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 3,
-    name: "🀜",
-    users: [
-      { name: "松尾", score: 0 },
-      { name: "林", score: 0 },
-      { name: "中川", score: 0 },
-      { name: "宮地", score: 0 },
-    ],
-    done: false,
+    name: "松尾",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 4,
-    name: "🀝",
-    users: [
-      { name: "林", score: 0 },
-      { name: "小林", score: 0 },
-      { name: "中山", score: 0 },
-      { name: "渡辺", score: 0 },
-    ],
-    done: false,
+    name: "中川",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 5,
-    name: "🀞",
-    users: [
-      { name: "小林", score: 0 },
-      { name: "中川", score: 0 },
-      { name: "高須賀", score: 0 },
-      { name: "藤田", score: 0 },
-    ],
-    done: false,
+    name: "小林",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 6,
-    name: "🀟",
-    users: [
-      { name: "中川", score: 0 },
-      { name: "中山", score: 0 },
-      { name: "宮地", score: 0 },
-      { name: "橋本", score: 0 },
-    ],
-    done: false,
+    name: "林",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 7,
-    name: "🀠",
-    users: [
-      { name: "中山", score: 0 },
-      { name: "高須賀", score: 0 },
-      { name: "渡辺", score: 0 },
-      { name: "松尾", score: 0 },
-    ],
-    done: false,
+    name: "中山",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 8,
-    name: "🀡",
-    users: [
-      { name: "高須賀", score: 0 },
-      { name: "宮地", score: 0 },
-      { name: "藤田", score: 0 },
-      { name: "林", score: 0 },
-    ],
-    done: false,
+    name: "高須賀",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
   },
   {
     id: 9,
-    name: "🀃",
-    users: [
-      { name: "宮地", score: 0 },
-      { name: "渡辺", score: 0 },
-      { name: "橋本", score: 0 },
-      { name: "小林", score: 0 },
-    ],
-    done: false,
+    name: "宮地",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: true,
+  },
+  {
+    id: 10,
+    name: "土屋",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: false,
+  },
+  {
+    id: 11,
+    name: "川本",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: false,
+  },
+  {
+    id: 12,
+    name: "山田",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: false,
   },
 ];
 
@@ -199,18 +186,4 @@ export const removeDup = (value: Match[]): Match[] => {
   ret.sort((a, b) => (a.id < b.id ? -1 : 1));
 
   return ret;
-};
-
-export const countAvailableMemberCount = (
-  users: User[],
-  targetMembers: MatchUser[]
-): number => {
-  let n = 0;
-  targetMembers.forEach((mem) => {
-    const found = users.find((user) => user.name === mem.name);
-    if (found && found.checked) {
-      n++;
-    }
-  });
-  return n;
 };
