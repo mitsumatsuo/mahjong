@@ -8,6 +8,8 @@ export type Player = {
   practice: boolean;
   name: string;
   date: string;
+  achievement: string | undefined;
+  record: string | undefined;
 };
 
 export type User = {
@@ -17,6 +19,8 @@ export type User = {
   practice: boolean;
   pageId: string;
   member: boolean;
+  achievement: string | undefined;
+  record: string | undefined;
 };
 
 export type MatchUser = {
@@ -50,6 +54,8 @@ export const defaultPlayer: Player = {
   practice: false,
   name: "noname",
   date: "2022-04-01",
+  achievement: "",
+  record: "",
 };
 
 export const convertResponseToPlayers = (response: any): Player[] => {
@@ -60,6 +66,12 @@ export const convertResponseToPlayers = (response: any): Player[] => {
       practice: r.properties.Practice.checkbox,
       name: r.properties.UserName.title[0].plain_text,
       date: r.properties.PlayableDate.date?.start,
+      achievement: r.properties.Achievement.multi_select
+        ?.map((i: any) => i.name)
+        .join(","),
+      record: r.properties.Record.multi_select
+        ?.map((i: any) => i.name)
+        .join(","),
     };
   });
 };
@@ -72,6 +84,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 1,
@@ -80,6 +94,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 2,
@@ -88,6 +104,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 3,
@@ -96,6 +114,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 4,
@@ -104,6 +124,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 5,
@@ -112,6 +134,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 6,
@@ -120,6 +144,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 7,
@@ -128,6 +154,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 8,
@@ -136,6 +164,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 9,
@@ -144,6 +174,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: true,
+    achievement: "",
+    record: "",
   },
   {
     id: 10,
@@ -152,6 +184,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: false,
+    achievement: "",
+    record: "",
   },
   {
     id: 11,
@@ -160,6 +194,8 @@ export const defaultUsers: User[] = [
     practice: false,
     pageId: "",
     member: false,
+    achievement: "",
+    record: "",
   },
 ];
 
