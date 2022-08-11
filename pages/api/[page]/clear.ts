@@ -17,7 +17,10 @@ export default async function handler(
     const rr = await notion.pages.update({
       page_id: pageId,
       properties: {
-        CanPlay: {
+        League: {
+          checkbox: false,
+        },
+        Practice: {
           checkbox: false,
         },
       },
