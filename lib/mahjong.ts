@@ -161,14 +161,6 @@ export const defaultUsers: User[] = [
     pageId: "",
     member: false,
   },
-  {
-    id: 12,
-    name: "山田",
-    league: false,
-    practice: false,
-    pageId: "",
-    member: false,
-  },
 ];
 
 export const title: string = "競技まぁじゃん部";

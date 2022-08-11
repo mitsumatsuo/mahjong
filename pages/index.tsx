@@ -28,16 +28,15 @@ const Page: NextPage = () => {
     });
 
     setUsers(newValue);
-  }, [data]);
+  }, [data, setUsers, defaultUsers]);
 
   const clearEventHandler = useCallback(() => {
-    setUsers((s) => {
-      return s.map((ss) => {
-        return {
-          ...ss,
-          checked: false,
-        };
-      });
+    setUsers((user) => {
+      return {
+        ...user,
+        league: false,
+        practice: false,
+      };
     });
     try {
       users.forEach(async (user) => {
@@ -47,45 +46,51 @@ const Page: NextPage = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [users]);
+  }, [users, setUsers]);
 
-  const leagueEventHandler = useCallback(async (e: User) => {
-    e.league = !e.league;
-    setUsers((old) => [
-      ...old.filter((user) => user.id < e.id),
-      e,
-      ...old.filter((user) => user.id > e.id),
-    ]);
-    try {
-      const r = await fetch(
-        `/api/${e.pageId}/edit?league=${
-          e.league ? "1" : "0"
-        }&date=${getToday()}`
-      );
-      const d = await r.json();
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const leagueEventHandler = useCallback(
+    async (e: User) => {
+      e.league = !e.league;
+      setUsers((old) => [
+        ...old.filter((user) => user.id < e.id),
+        e,
+        ...old.filter((user) => user.id > e.id),
+      ]);
+      try {
+        const r = await fetch(
+          `/api/${e.pageId}/edit?league=${
+            e.league ? "1" : "0"
+          }&date=${getToday()}`
+        );
+        const d = await r.json();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [setUsers, getToday]
+  );
 
-  const practiceEventHandler = useCallback(async (e: User) => {
-    e.practice = !e.practice;
-    setUsers((old) => [
-      ...old.filter((user) => user.id < e.id),
-      e,
-      ...old.filter((user) => user.id > e.id),
-    ]);
-    try {
-      const r = await fetch(
-        `/api/${e.pageId}/edit?practice=${
-          e.practice ? "1" : "0"
-        }&date=${getToday()}`
-      );
-      const d = await r.json();
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const practiceEventHandler = useCallback(
+    async (e: User) => {
+      e.practice = !e.practice;
+      setUsers((old) => [
+        ...old.filter((user) => user.id < e.id),
+        e,
+        ...old.filter((user) => user.id > e.id),
+      ]);
+      try {
+        const r = await fetch(
+          `/api/${e.pageId}/edit?practice=${
+            e.practice ? "1" : "0"
+          }&date=${getToday()}`
+        );
+        const d = await r.json();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [setUsers, getToday]
+  );
 
   if (isLoading) return null;
   if (isError) return null;
@@ -133,12 +138,14 @@ const Page: NextPage = () => {
           ))}
           <div className="px-4">
             <div className="p-1 space-x-4 flex items-center">
-              <span className="inline-block w-48 bg-white shadow-sm shadow-black text-center text-xl font-bold">
-                {}
+              <span className="inline-block w-48 bg-blue-300 shadow-sm shadow-black text-center text-xl font-bold">
+                {""}
               </span>
               <span
                 className="inline-block w-[270px] rounded-full bg-white shadow-sm shadow-black text-center text-xl font-bold hover:-translate-y-px duration-200 active:shadow-none active:translate-y-0 active:bg-[#3dc14f]"
-                onClick={(e) => clearEventHandler()}
+                onClick={(e) => {
+                  clearEventHandler();
+                }}
               >
                 流局
               </span>
