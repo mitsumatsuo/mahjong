@@ -100,8 +100,8 @@ const Page: NextPage = () => {
 
       <main className="relative">
         <div className="flex flex-col items-start p-2">
-          {users.map((user) => (
-            <div className="px-4">
+          {users.map((user, idx) => (
+            <div key={idx} className="px-4">
               <div className="p-1 space-x-4 flex items-center">
                 <span className="inline-block w-48 bg-white shadow-sm shadow-black text-center text-xl font-bold">
                   {user.name}
