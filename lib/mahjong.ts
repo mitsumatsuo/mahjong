@@ -21,6 +21,27 @@ export type User = {
   member: boolean;
   achievement: string | undefined;
   record: string | undefined;
+  score: {
+    open: ScoreDetail;
+    league: ScoreDetail;
+  };
+};
+
+export type ScoreDetail = {
+  total: number;
+  match: number;
+};
+
+export type MatchScore = {
+  name: string;
+  number: number;
+};
+
+export type Score = {
+  page: { id: string };
+  name: string;
+  date: string;
+  members: MatchScore[];
 };
 
 export type MatchUser = {
@@ -75,6 +96,34 @@ export const convertResponseToPlayers = (response: any): Player[] => {
     };
   });
 };
+export const convertResponseToScores = (response: any): Score[] => {
+  return (
+    response.results
+      // .filter(
+      //   (r: any) => r.properties["試合名"].title[0].plain_text === "リーグ戦"
+      // )
+      .map((r: any) => {
+        return {
+          page: { id: r.id },
+          name: r.properties["試合名"].title[0].plain_text,
+          date: r.properties["対局日"].date.start,
+          members: r.properties["対局者"].multi_select?.map((i: any) => {
+            return { name: i.name, number: r.properties[i.name].number };
+          }),
+          // league: r.properties.League.checkbox,
+          // practice: r.properties.Practice.checkbox,
+          // name: r.properties.UserName.title[0].plain_text,
+          // date: r.properties.PlayableDate.date?.start,
+          // achievement: r.properties.Achievement.multi_select
+          //   ?.map((i: any) => i.name)
+          //   .join(","),
+          // record: r.properties.Record.multi_select
+          //   ?.map((i: any) => i.name)
+          //   .join(","),
+        };
+      })
+  );
+};
 
 export const defaultUsers: User[] = [
   {
@@ -86,6 +135,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 1,
@@ -96,6 +146,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 2,
@@ -106,6 +157,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 3,
@@ -116,6 +168,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 4,
@@ -126,6 +179,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 5,
@@ -136,6 +190,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 6,
@@ -146,6 +201,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 7,
@@ -156,6 +212,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 8,
@@ -166,6 +223,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 9,
@@ -176,6 +234,7 @@ export const defaultUsers: User[] = [
     member: true,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 10,
@@ -186,6 +245,7 @@ export const defaultUsers: User[] = [
     member: false,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
   {
     id: 11,
@@ -196,6 +256,7 @@ export const defaultUsers: User[] = [
     member: false,
     achievement: "",
     record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
   },
 ];
 

@@ -2,7 +2,8 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import usePlayers from "../hooks/usePlayers";
-import { defaultUsers, Player, User } from "../lib/mahjong";
+import useScores from "../hooks/useScores";
+import { defaultUsers, Player, User, Score } from "../lib/mahjong";
 import { getToday } from "../lib/util";
 
 const cn = (...classNames: string[]) => {
@@ -11,10 +12,15 @@ const cn = (...classNames: string[]) => {
 
 const Page: NextPage = () => {
   const { data, isError, isLoading } = usePlayers();
+  const {
+    data: scores,
+    isError: isErrorScore,
+    isLoading: isLoadingScore,
+  } = useScores();
   const [users, setUsers] = useState(defaultUsers);
 
   useEffect(() => {
-    if (!data) return;
+    if (isLoading || isError) return;
     let newValue: User[] = [];
 
     defaultUsers.forEach((user) => {
@@ -29,8 +35,45 @@ const Page: NextPage = () => {
       newValue.push(user);
     });
 
+    if (scores) {
+      const opens = scores
+        .filter((score: Score) => score.name === "オープン戦")
+        .map((score: Score) => score.members)
+        .flat();
+      const leagues = scores
+        .filter((score: Score) => score.name === "リーグ戦")
+        .map((score: Score) => score.members)
+        .flat();
+
+      newValue.forEach((i) => {
+        let tmp = opens.filter((j) => j.name === i.name).map((i) => i.number);
+        let tmp2 = leagues
+          .filter((j) => j.name === i.name)
+          .map((i) => i.number);
+        i.score = {
+          open: {
+            total: tmp.reduce((p, c) => p + c, 0),
+            match: tmp.length,
+          },
+          league: {
+            total: tmp2.reduce((p, c) => p + c, 0),
+            match: tmp2.length,
+          },
+        };
+      });
+    }
+
     setUsers(newValue);
-  }, [data, setUsers, defaultUsers]);
+  }, [
+    data,
+    setUsers,
+    defaultUsers,
+    isLoading,
+    isError,
+    isErrorScore,
+    isLoadingScore,
+    scores,
+  ]);
 
   const clearEventHandler = useCallback(() => {
     setUsers((s) => {
@@ -98,6 +141,8 @@ const Page: NextPage = () => {
 
   if (isLoading) return null;
   if (isError) return null;
+  if (isLoadingScore) return null;
+  if (isErrorScore) return null;
 
   return (
     <div className="select-none min-h-screen">
@@ -112,7 +157,7 @@ const Page: NextPage = () => {
           <h1 className="p-1 w-full bg-[#fbecdd] text-2xl">参加可否</h1>
         </div>
         <div className="flex flex-col items-start p-2">
-          {users.map((user, idx) => (
+          {users.map((user: User, idx) => (
             <div key={idx} className="px-4 ">
               <div className="p-1 space-x-4 flex items-center">
                 <span
@@ -207,6 +252,7 @@ const Page: NextPage = () => {
                 >
                   練習
                 </span>
+                <ScoreSpan user={user} />
               </div>
             </div>
           ))}
@@ -232,6 +278,47 @@ const Page: NextPage = () => {
         </div>
       </main>
     </div>
+  );
+};
+
+const ScoreSpan = ({ user }: { user: User }) => {
+  const [type, setType] = useState(0);
+  const open =
+    type === 0
+      ? user.score.open.match > 0
+        ? Math.round((user.score.open.total / user.score.open.match) * 10) / 10
+        : "-"
+      : type === 1
+      ? user.score.open.total
+      : type === 2
+      ? user.score.open.match
+      : "-";
+  const league =
+    type === 0
+      ? user.score.league.match > 0
+        ? Math.round((user.score.league.total / user.score.league.match) * 10) /
+          10
+        : "-"
+      : type === 1
+      ? user.score.league.total
+      : type === 2
+      ? user.score.league.match
+      : "-";
+  const label = () =>
+    type === 0 ? "平均" : type === 1 ? "合計" : type === 2 ? "参加" : "-";
+  return (
+    <>
+      <span className="w-16">オープン</span>
+      <span className="w-10 font-sans text-right">{open}</span>
+      <span className="w-12">リーグ</span>
+      <span className="w-10 font-sans text-right">{league}</span>
+      <span
+        className="border text-xs py-px px-2 rounded"
+        onClick={(e) => setType((s) => (s + 1) % 3)}
+      >
+        {label()}
+      </span>
+    </>
   );
 };
 

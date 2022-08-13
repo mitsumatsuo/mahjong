@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { convertResponseToPlayers, Player } from "../../lib/mahjong";
+import { convertResponseToScores, Score } from "../../lib/mahjong";
 import { handleError } from "../../lib/notion";
 
 const notion = new Client({
@@ -9,14 +9,14 @@ const notion = new Client({
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Player[]>
+  res: NextApiResponse<Score[]>
 ) {
   try {
-    const databaseId = process.env.NOTION_PLAYER_DATABASE_ID ?? "";
+    const databaseId = process.env.NOTION_SCORE_DATABASE_ID ?? "";
     const response = await notion.databases.query({
       database_id: databaseId,
     });
-    res.status(200).json(convertResponseToPlayers(response));
+    res.status(200).json(convertResponseToScores(response));
   } catch (error: unknown) {
     handleError(error, res);
   }
