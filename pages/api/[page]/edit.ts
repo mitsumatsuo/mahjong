@@ -15,7 +15,7 @@ export default async function handler(
     const { page, practice, league, date } = req.query;
     const pageId = Array.isArray(page) ? "" : page;
     const start = Array.isArray(date) ? "" : date;
-    const databaseId = process.env.NOTION_DATABASE_ID ?? "";
+    const databaseId = process.env.NOTION_PLAYER_DATABASE_ID ?? "";
     const response = await notion.databases.query({
       database_id: databaseId,
     });
