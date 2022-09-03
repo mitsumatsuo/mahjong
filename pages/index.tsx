@@ -23,7 +23,9 @@ const setRank = (scores: Score[], newValue: User[]) => {
       ranks.sort((a, b) => (a < b ? 1 : -1));
       score.members.forEach((member) => {
         const m = newValue.find((user) => user.name === member.name);
-        if (!m) return;
+        if (!m) {
+          return;
+        }
         const rank = ranks.indexOf(member.number) + 1;
         if (rank === 1) {
           m.rank.first++;
@@ -31,7 +33,7 @@ const setRank = (scores: Score[], newValue: User[]) => {
           m.rank.second++;
         } else if (rank === 3) {
           m.rank.third++;
-        } else if (rank === 4) {
+        } else {
           m.rank.fourth++;
         }
       });
@@ -199,10 +201,7 @@ const Page: NextPage = () => {
           {users.map((user: User, idx) => (
             <div key={idx} className="px-4 ">
               <div className="p-1 space-x-4 flex items-center">
-                <span
-                  className="inline-block w-32 bg-white shadow-sm shadow-black text-center text-xl font-bold relative"
-                  onClick={(e) => console.log(user)}
-                >
+                <span className="inline-block w-32 bg-white shadow-sm shadow-black text-center text-xl font-bold relative">
                   {user.name}
                   <div className="absolute right-0 bottom-1/2 inset-y-0">
                     {user.achievement ? (
