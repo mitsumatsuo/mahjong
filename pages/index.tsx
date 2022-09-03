@@ -11,24 +11,31 @@ const cn = (...classNames: string[]) => {
 };
 
 const setRank = (scores: Score[], newValue: User[]) => {
-  scores.forEach((score) => {
-    const ranks = score.members.map((m) => m.number).flat();
-    ranks.sort((a, b) => (a < b ? 1 : -1));
-    score.members.forEach((member) => {
-      const m = newValue.find((user) => user.name === member.name);
-      if (!m) return;
-      const rank = ranks.indexOf(member.number) + 1;
-      if (rank === 1) {
-        m.rank.first++;
-      } else if (rank === 2) {
-        m.rank.second++;
-      } else if (rank === 3) {
-        m.rank.third++;
-      } else if (rank === 4) {
-        m.rank.fourth++;
-      }
+  scores
+    .filter(
+      (score) =>
+        score.name === "リーグ戦" ||
+        score.name === "オープン戦" ||
+        score.name === "１回戦"
+    )
+    .forEach((score) => {
+      const ranks = score.members.map((m) => m.number).flat();
+      ranks.sort((a, b) => (a < b ? 1 : -1));
+      score.members.forEach((member) => {
+        const m = newValue.find((user) => user.name === member.name);
+        if (!m) return;
+        const rank = ranks.indexOf(member.number) + 1;
+        if (rank === 1) {
+          m.rank.first++;
+        } else if (rank === 2) {
+          m.rank.second++;
+        } else if (rank === 3) {
+          m.rank.third++;
+        } else if (rank === 4) {
+          m.rank.fourth++;
+        }
+      });
     });
-  });
 };
 
 const Page: NextPage = () => {
@@ -62,7 +69,9 @@ const Page: NextPage = () => {
         .map((score: Score) => score.members)
         .flat();
       const leagues = scores
-        .filter((score: Score) => score.name === "リーグ戦")
+        .filter(
+          (score: Score) => score.name === "リーグ戦" || score.name === "１回戦"
+        )
         .map((score: Score) => score.members)
         .flat();
 
@@ -342,18 +351,18 @@ const ScoreSpan = ({ user }: { user: User }) => {
       <div className="border flex">
         <div className="w-24 border">
           <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
-            オープン
+            公式
           </div>
           <div className="text-center font-mono text-sm flex items-center justify-center">
-            {getScoreText(type, user.score.open)}
+            {getScoreText(type, user.score.league)}
           </div>
         </div>
         <div className="w-24 border">
           <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
-            リーグ
+            練習
           </div>
           <div className="text-center font-mono text-sm flex items-center justify-center">
-            {getScoreText(type, user.score.league)}
+            {getScoreText(type, user.score.open)}
           </div>
         </div>
       </div>
@@ -419,14 +428,20 @@ const getScoreText = (type: number, value: ScoreDetail): any => {
   let nonZero = type !== 2 && val !== 0 && val.toString()[0] !== "-";
 
   return (
-    <div>
-      <span className={`text-lg font-bold ${minus ? "text-[red]" : nonZero ? "text-[blue]" : ""}`}>{val}</span>
+    <div className="flex justify-center items-end w-full">
+      <span
+        className={`text-lg font-bold flex-1 ${
+          minus ? "text-[red]" : nonZero ? "text-[blue]" : ""
+        }`}
+      >
+        {val}
+      </span>
       {type === 0 ? (
-        <span className="text-xs font-thin font-serif">点</span>
+        <span className="text-xs font-thin font-serif w-5">点</span>
       ) : type === 1 ? (
-        <span className="text-xs font-thin font-serif">点</span>
+        <span className="text-xs font-thin font-serif w-5">点</span>
       ) : (
-        <span className="text-xs font-thin font-serif">回</span>
+        <span className="text-xs font-thin font-serif w-5">回</span>
       )}
     </div>
   );
@@ -443,12 +458,12 @@ const getRankText = (type: number, value: number, user: User): any => {
       : value;
 
   return (
-    <div>
-      <span className="text-lg font-bold">{val}</span>
+    <div className="flex justify-center items-end w-full">
+      <span className="text-lg font-bold flex-1">{val}</span>
       {type === 0 ? (
-        <span className="text-xs font-thin font-serif">%</span>
+        <span className="text-xs font-thin font-serif w-5">%</span>
       ) : (
-        <span className="text-xs font-thin font-serif">回</span>
+        <span className="text-xs font-thin font-serif w-5">回</span>
       )}
     </div>
   );
