@@ -8,11 +8,7 @@ type Result = {
 };
 
 const usePlayers = (): Result => {
-  const { data, error } = useSWR(`/api/player`, (url) =>
-    fetch(url)
-      .then((r) => r.json())
-      .catch((err) => console.error(err))
-  );
+  const { data, error } = useSWR(`/api/player`);
 
   return {
     data: data,

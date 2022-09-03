@@ -8,11 +8,7 @@ type Result = {
 };
 
 const useGoals = (): Result => {
-  const { data, error } = useSWR(`/api/example`, (url) =>
-    fetch(url)
-      .then((r) => r.json())
-      .catch((err) => console.error(err))
-  );
+  const { data, error } = useSWR(`/api/example`);
 
   return {
     data: data,

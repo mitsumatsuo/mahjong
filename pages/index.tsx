@@ -3,11 +3,32 @@ import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import usePlayers from "../hooks/usePlayers";
 import useScores from "../hooks/useScores";
-import { defaultUsers, Player, User, Score } from "../lib/mahjong";
+import { defaultUsers, Player, User, Score, ScoreDetail } from "../lib/mahjong";
 import { getToday } from "../lib/util";
 
 const cn = (...classNames: string[]) => {
   return classNames.filter(Boolean).join(" ");
+};
+
+const setRank = (scores: Score[], newValue: User[]) => {
+  scores.forEach((score) => {
+    const ranks = score.members.map((m) => m.number).flat();
+    ranks.sort((a, b) => (a < b ? 1 : -1));
+    score.members.forEach((member) => {
+      const m = newValue.find((user) => user.name === member.name);
+      if (!m) return;
+      const rank = ranks.indexOf(member.number) + 1;
+      if (rank === 1) {
+        m.rank.first++;
+      } else if (rank === 2) {
+        m.rank.second++;
+      } else if (rank === 3) {
+        m.rank.third++;
+      } else if (rank === 4) {
+        m.rank.fourth++;
+      }
+    });
+  });
 };
 
 const Page: NextPage = () => {
@@ -60,7 +81,16 @@ const Page: NextPage = () => {
             match: tmp2.length,
           },
         };
+        i.rank = {
+          first: 0,
+          second: 0,
+          third: 0,
+          fourth: 0,
+        };
       });
+
+      // 順位
+      setRank(scores, newValue);
     }
 
     setUsers(newValue);
@@ -283,6 +313,7 @@ const Page: NextPage = () => {
 
 const ScoreSpan = ({ user }: { user: User }) => {
   const [type, setType] = useState(0);
+  const { rank } = user;
   const open =
     type === 0
       ? user.score.open.match > 0
@@ -308,10 +339,60 @@ const ScoreSpan = ({ user }: { user: User }) => {
     type === 0 ? "平均" : type === 1 ? "合計" : type === 2 ? "参加" : "-";
   return (
     <>
-      <span className="w-16">オープン</span>
-      <span className="w-10 font-sans text-right">{open}</span>
-      <span className="w-12">リーグ</span>
-      <span className="w-10 font-sans text-right">{league}</span>
+      <div className="border flex">
+        <div className="w-24 border">
+          <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
+            オープン
+          </div>
+          <div className="text-center font-mono text-sm flex items-center justify-center">
+            {getScoreText(type, user.score.open)}
+          </div>
+        </div>
+        <div className="w-24 border">
+          <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
+            リーグ
+          </div>
+          <div className="text-center font-mono text-sm flex items-center justify-center">
+            {getScoreText(type, user.score.league)}
+          </div>
+        </div>
+      </div>
+
+      <div className="border flex">
+        <div className="w-16 border">
+          <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
+            一位
+          </div>
+          <div className="text-center font-mono text-sm flex items-center justify-center">
+            {getRankText(type, rank.first, user)}
+          </div>
+        </div>
+        <div className="w-16 border">
+          <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
+            二位
+          </div>
+          <div className="text-center font-mono text-sm flex items-center justify-center">
+            {getRankText(type, rank.second, user)}
+          </div>
+        </div>
+        <div className="w-16 border">
+          <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
+            三位
+          </div>
+          <div className="text-center font-mono text-sm flex items-center justify-center">
+            {getRankText(type, rank.third, user)}
+          </div>
+        </div>
+        <div className="w-16 border">
+          <div className="text-center text-sm flex items-center justify-center bg-slate-200 px-2">
+            四位
+          </div>
+          <div className="text-center font-mono text-sm flex items-center justify-center">
+            {getRankText(type, rank.fourth, user)}
+          </div>
+        </div>
+      </div>
+
       <span
         className="border text-xs py-px px-2 rounded"
         onClick={(e) => setType((s) => (s + 1) % 3)}
@@ -319,6 +400,57 @@ const ScoreSpan = ({ user }: { user: User }) => {
         {label()}
       </span>
     </>
+  );
+};
+
+const getScoreText = (type: number, value: ScoreDetail): any => {
+  const val =
+    type === 0
+      ? value.match > 0
+        ? Math.round((value.total / value.match) * 10) / 10
+        : "-"
+      : type === 1
+      ? value.total
+      : type === 2
+      ? value.match
+      : "-";
+
+  let minus = type !== 2 && val !== "-" && val.toString()[0] === "-";
+  let nonZero = type !== 2 && val !== 0 && val.toString()[0] !== "-";
+
+  return (
+    <div>
+      <span className={`text-lg font-bold ${minus ? "text-[red]" : nonZero ? "text-[blue]" : ""}`}>{val}</span>
+      {type === 0 ? (
+        <span className="text-xs font-thin font-serif">点</span>
+      ) : type === 1 ? (
+        <span className="text-xs font-thin font-serif">点</span>
+      ) : (
+        <span className="text-xs font-thin font-serif">回</span>
+      )}
+    </div>
+  );
+};
+
+const getRankText = (type: number, value: number, user: User): any => {
+  const val =
+    type === 0
+      ? user.score.open.match + user.score.league.match === 0
+        ? 0
+        : Math.round(
+            (value / (user.score.open.match + user.score.league.match)) * 1000
+          ) / 10
+      : value;
+
+  return (
+    <div>
+      <span className="text-lg font-bold">{val}</span>
+      {type === 0 ? (
+        <span className="text-xs font-thin font-serif">%</span>
+      ) : (
+        <span className="text-xs font-thin font-serif">回</span>
+      )}
+    </div>
   );
 };
 
