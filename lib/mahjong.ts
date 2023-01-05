@@ -278,6 +278,18 @@ export const defaultUsers: User[] = [
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
   },
+  {
+    id: 12,
+    name: "大野",
+    league: false,
+    practice: false,
+    pageId: "",
+    member: false,
+    achievement: "",
+    record: "",
+    score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
+    rank: { first: 0, second: 0, third: 0, fourth: 0 },
+  },
 ];
 
 export const title: string = "競技まぁじゃん部";
