@@ -10,7 +10,10 @@ export type Player = {
   date: string;
   achievement: string | undefined;
   record: string | undefined;
+  penalty: Penalty;
 };
+
+export type ObjectKey = "practice" | "league";
 
 export type User = {
   id: number;
@@ -26,6 +29,11 @@ export type User = {
     league: ScoreDetail;
   };
   rank: UserRank;
+  penalty: Penalty;
+};
+
+export type Penalty = {
+  count: number;
 };
 
 export type UserRank = {
@@ -85,6 +93,9 @@ export const defaultPlayer: Player = {
   date: "2022-04-01",
   achievement: "",
   record: "",
+  penalty: {
+    count: 0,
+  },
 };
 
 export const convertResponseToPlayers = (response: any): Player[] => {
@@ -101,6 +112,9 @@ export const convertResponseToPlayers = (response: any): Player[] => {
       record: r.properties.Record.multi_select
         ?.map((i: any) => i.name)
         .join(","),
+      penalty: {
+        count: r.properties.Penalty.number ?? 0,
+      },
     };
   });
 };
@@ -145,6 +159,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 1,
@@ -157,6 +172,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 2,
@@ -169,6 +185,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 3,
@@ -181,6 +198,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 4,
@@ -193,6 +211,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 5,
@@ -205,6 +224,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 6,
@@ -217,6 +237,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 7,
@@ -229,6 +250,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 8,
@@ -241,6 +263,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 9,
@@ -253,6 +276,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 10,
@@ -265,6 +289,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 11,
@@ -277,6 +302,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
   {
     id: 12,
@@ -289,6 +315,7 @@ export const defaultUsers: User[] = [
     record: "",
     score: { open: { total: 0, match: 0 }, league: { total: 0, match: 0 } },
     rank: { first: 0, second: 0, third: 0, fourth: 0 },
+    penalty: { count: 0 },
   },
 ];
 
