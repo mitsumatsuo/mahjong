@@ -48,6 +48,7 @@ const Page: NextPage = () => {
     isLoading: isLoadingScore,
   } = useScores();
   const [users, setUsers] = useState(defaultUsers);
+  const [type, setType] = useState(0);
 
   useEffect(() => {
     if (isLoading || isError) return;
@@ -172,7 +173,7 @@ const Page: NextPage = () => {
     [users, clearEventHandler]
   );
 
-  const UserRecord = ({ user }: { user: User }) => (
+  const UserRecord = ({ user, type, setType, showType }: { user: User }) => (
     <div className="px-4 ">
       <div className="p-1 space-x-4 flex items-center">
         <div className="inline-block w-32 bg-white shadow-sm shadow-black text-center text-xl font-bold relative">
@@ -190,7 +191,7 @@ const Page: NextPage = () => {
           value={user.practice}
           action={() => toggleEventHandler(user.pageId, user.id, "practice")}
         />
-        <ScoreSpan user={user} />
+        <ScoreSpan user={user} type={type} setType={setType} showType={showType} />
       </div>
     </div>
   );
@@ -225,7 +226,7 @@ const Page: NextPage = () => {
         </div>
         <div className="flex flex-col items-start p-2">
           {users.map((user: User, idx) => (
-            <UserRecord key={idx} user={user} />
+            <UserRecord key={idx} user={user} type={type} setType={setType} showType={idx===0} />
           ))}
           <ClearRecord />
         </div>

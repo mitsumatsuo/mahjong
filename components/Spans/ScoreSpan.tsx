@@ -1,32 +1,40 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { User, ScoreDetail } from "../../lib/mahjong";
 
-const ScoreSpan = ({ user }: { user: User }) => {
-  const [type, setType] = useState(0);
+export const TypeSelectButton = ({ type, setType }) => {
+  return (
+    <Fragment>
+      <span
+        className={`border text-xs py-px px-2 rounded ${
+          type === 0 ? "bg-green-300 border-green-400" : ""
+        }`}
+        onClick={(e) => setType(0)}
+      >
+        平均
+      </span>
+      <span
+        className={`border text-xs py-px px-2 rounded ${
+          type === 1 ? "bg-green-300 border-green-400" : ""
+        }`}
+        onClick={(e) => setType(1)}
+      >
+        合計
+      </span>
+      <span
+        className={`border text-xs py-px px-2 rounded ${
+          type === 2 ? "bg-green-300 border-green-400" : ""
+        }`}
+        onClick={(e) => setType(2)}
+      >
+        参加
+      </span>
+    </Fragment>
+  );
+};
+
+const ScoreSpan = ({ user, type, setType, showType }: { user: User }) => {
+  // const [type, setType] = useState(0);
   const { rank } = user;
-  // const open =
-  //   type === 0
-  //     ? user.score.open.match > 0
-  //       ? Math.round((user.score.open.total / user.score.open.match) * 10) / 10
-  //       : "-"
-  //     : type === 1
-  //     ? user.score.open.total
-  //     : type === 2
-  //     ? user.score.open.match
-  //     : "-";
-  // const league =
-  //   type === 0
-  //     ? user.score.league.match > 0
-  //       ? Math.round((user.score.league.total / user.score.league.match) * 10) /
-  //         10
-  //       : "-"
-  //     : type === 1
-  //     ? user.score.league.total
-  //     : type === 2
-  //     ? user.score.league.match
-  //     : "-";
-  const label = () =>
-    type === 0 ? "平均" : type === 1 ? "合計" : type === 2 ? "参加" : "-";
   return (
     <>
       <div className="border flex">
@@ -83,12 +91,7 @@ const ScoreSpan = ({ user }: { user: User }) => {
         </div>
       </div>
 
-      <span
-        className="border text-xs py-px px-2 rounded"
-        onClick={(e) => setType((s) => (s + 1) % 3)}
-      >
-        {label()}
-      </span>
+      {showType && <TypeSelectButton type={type} setType={setType} />}
     </>
   );
 };

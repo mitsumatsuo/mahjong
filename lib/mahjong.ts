@@ -149,7 +149,7 @@ export const convertResponseToScores = (response: any): Score[] => {
 
 export const defaultUsers: User[] = [
   {
-    id: 10,
+    id: 1,
     name: "土屋",
     league: false,
     practice: false,
@@ -162,7 +162,7 @@ export const defaultUsers: User[] = [
     penalty: { count: 0 },
   },
   {
-    id: 11,
+    id: 2,
     name: "川本",
     league: false,
     practice: false,
@@ -175,7 +175,7 @@ export const defaultUsers: User[] = [
     penalty: { count: 0 },
   },
   {
-    id: 1,
+    id: 3,
     name: "藤田",
     league: false,
     practice: false,
@@ -201,7 +201,7 @@ export const defaultUsers: User[] = [
     penalty: { count: 0 },
   },
   {
-    id: 3,
+    id: 5,
     name: "松尾",
     league: false,
     practice: false,
@@ -214,7 +214,7 @@ export const defaultUsers: User[] = [
     penalty: { count: 0 },
   },
   {
-    id: 9,
+    id: 6,
     name: "宮地",
     league: false,
     practice: false,
@@ -227,7 +227,7 @@ export const defaultUsers: User[] = [
     penalty: { count: 0 },
   },
   {
-    id: 2,
+    id: 7,
     name: "渡辺",
     league: false,
     practice: false,
