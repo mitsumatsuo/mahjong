@@ -1,7 +1,13 @@
 import { Fragment, useState } from "react";
 import { User, ScoreDetail } from "../../lib/mahjong";
 
-export const TypeSelectButton = ({ type, setType }) => {
+export const TypeSelectButton = ({
+  type,
+  setType,
+}: {
+  type: number;
+  setType: (type: number) => void;
+}) => {
   return (
     <Fragment>
       <span
@@ -32,7 +38,17 @@ export const TypeSelectButton = ({ type, setType }) => {
   );
 };
 
-const ScoreSpan = ({ user, type, setType, showType }: { user: User }) => {
+const ScoreSpan = ({
+  user,
+  type,
+  setType,
+  showType,
+}: {
+  user: User;
+  type: number;
+  setType: (type: number) => void;
+  showType: boolean;
+}) => {
   // const [type, setType] = useState(0);
   const { rank } = user;
   return (
