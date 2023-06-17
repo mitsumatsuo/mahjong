@@ -184,7 +184,7 @@ const Page: NextPage = () => {
     setType: (type: number) => void;
     showType: boolean;
   }) => (
-    <div className="px-4 ">
+    <div className="px-4">
       <div className="p-1 space-x-4 flex items-center">
         <div className="inline-block w-32 bg-white shadow-sm shadow-black text-center text-xl font-bold relative">
           <UserName user={user} />
@@ -237,7 +237,9 @@ const Page: NextPage = () => {
 
       <main className="relative font-fdx">
         <div className="h-10 flex items-center px-6">
-          <h1 className="p-1 w-full bg-[#fbecdd] text-2xl">参加可否</h1>
+          <h1 className="p-1 bg-[#fbecdd] text-2xl w-full min-w-[1125px]">
+            参加可否
+          </h1>
         </div>
         <div className="flex flex-col items-start p-2">
           {users.map((user: User, idx) => (

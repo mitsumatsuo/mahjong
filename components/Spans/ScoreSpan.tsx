@@ -11,7 +11,7 @@ export const TypeSelectButton = ({
   return (
     <Fragment>
       <span
-        className={`border text-xs py-px px-2 rounded ${
+        className={`border text-xs py-px px-2 rounded whitespace-nowrap ${
           type === 0 ? "bg-green-300 border-green-400" : ""
         }`}
         onClick={(e) => setType(0)}
@@ -19,7 +19,7 @@ export const TypeSelectButton = ({
         平均
       </span>
       <span
-        className={`border text-xs py-px px-2 rounded ${
+        className={`border text-xs py-px px-2 rounded whitespace-nowrap ${
           type === 1 ? "bg-green-300 border-green-400" : ""
         }`}
         onClick={(e) => setType(1)}
@@ -27,7 +27,7 @@ export const TypeSelectButton = ({
         合計
       </span>
       <span
-        className={`border text-xs py-px px-2 rounded ${
+        className={`border text-xs py-px px-2 rounded whitespace-nowrap ${
           type === 2 ? "bg-green-300 border-green-400" : ""
         }`}
         onClick={(e) => setType(2)}
