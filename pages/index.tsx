@@ -87,10 +87,12 @@ const Page: NextPage = () => {
         i.score = {
           open: {
             total: tmp.reduce((p, c) => p + c, 0),
+            negative: tmp.filter((t) => t < -30).length,
             match: tmp.length,
           },
           league: {
             total: tmp2.reduce((p, c) => p + c, 0),
+            negative: tmp2.filter((t) => t < -30).length,
             match: tmp2.length,
           },
         };
@@ -237,8 +239,11 @@ const Page: NextPage = () => {
 
       <main className="relative font-fdx">
         <div className="h-10 flex items-center px-6">
-          <h1 className="p-1 bg-[#fbecdd] text-2xl w-full min-w-[1125px]">
+          <h1 className="p-1 bg-[#fbecdd] text-2xl w-[420px] mr-4 shrink-0">
             参加可否
+          </h1>
+          <h1 className="p-1 bg-[#e6fbdd] text-2xl w-full min-w-[720px] max-w-[720px]">
+            記録
           </h1>
         </div>
         <div className="flex flex-col items-start p-2">

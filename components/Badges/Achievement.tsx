@@ -20,7 +20,7 @@ const Achievement = ({ user }: { user: User }) => {
           />
         </svg>
         <div className="absolute hidden group-hover:block -top-8 -left-2 text-sm truncate z-10 bg-white border border-black py-1 px-4">
-          {user.achievement}
+          {user.achievement.split(',').map((i, idx) => <span key={idx} className="px-0">「{i}」</span>)}
         </div>
       </div>
     </div>

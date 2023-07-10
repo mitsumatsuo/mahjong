@@ -1,6 +1,6 @@
 import { User } from "../../lib/mahjong";
 
-const Achievement = ({ user }: { user: User }) => {
+const Record = ({ user }: { user: User }) => {
   if (!user || !user.record) return null;
   return (
     <div className="absolute left-1 top-1">
@@ -34,11 +34,11 @@ const Achievement = ({ user }: { user: User }) => {
           />
         </svg>
         <div className="absolute hidden group-hover:block -top-8 -left-2 text-sm truncate z-10 bg-white border border-black py-1 px-4">
-          {user.record}
+          {user.record.split(',').map((i, idx) => <span key={idx} className="px-0">「{i}」</span>)}
         </div>
       </div>
     </div>
   );
 };
 
-export default Achievement;
+export default Record;
