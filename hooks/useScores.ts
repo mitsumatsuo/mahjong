@@ -9,7 +9,7 @@ type Result = {
 
 const useScores = (): Result => {
   const { data, error } = useSWR(`/api/score`);
-
+  
   return {
     data: data,
     isLoading: !error && !data,

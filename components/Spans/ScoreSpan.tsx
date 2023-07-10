@@ -96,7 +96,6 @@ const ScoreSpan = ({
   setType: (type: number) => void;
   showType: boolean;
 }) => {
-  console.log(user);
   const { rank } = user;
   return (
     <>
