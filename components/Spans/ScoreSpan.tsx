@@ -150,11 +150,13 @@ const getAverageRankText = (
   fourth: number
 ): any => {
   const val =
-    Math.round(
-      ((first * 1 + second * 2 + third * 3 + fourth * 4) /
-        (first + second + third + fourth)) *
-        100
-    ) / 100;
+    first === 0 && second === 0 && third === 0 && fourth === 0
+      ? 0
+      : Math.round(
+          ((first * 1 + second * 2 + third * 3 + fourth * 4) /
+            (first + second + third + fourth)) *
+            100
+        ) / 100;
   let minus = val > 2.5;
 
   return (
